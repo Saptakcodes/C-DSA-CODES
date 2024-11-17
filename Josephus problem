@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to create a circular linked list of size n
+struct Node* createCircularList(int n) {
+    struct Node *head = NULL, *temp = NULL, *prev = NULL;
+
+    // Create n nodes
+    for (int i = 1; i <= n; i++) {
+        temp = createNode(i); // Create a new node with data `i`
+        if (head == NULL) {
+            head = temp; // Set head to the first node
+        } else {
+            prev->next = temp; // Link previous node to the current node
+        }
+        prev = temp;
+    }
+    prev->next = head; // Make the list circular by connecting the last node to head
+    return head;
+}
+
+// Function to solve the Josephus problem using the circular linked list
+int josephus(int n, int k) {
+    struct Node* head = createCircularList(n);
+    struct Node* temp = head;
+    struct Node* prev = NULL;
+
+    // Continue until only one node is left
+    while (temp->next != temp) {
+        // Traverse k-1 nodes
+        for (int i = 1; i < k; i++) {
+            prev = temp;
+            temp = temp->next;
+        }
+        // Eliminate the k-th person
+        prev->next = temp->next; // Skip the k-th node
+        printf("Eliminated: %d\n", temp->data);
+        free(temp); // Free the memory of the eliminated node
+        temp = prev->next; // Move to the next node
+    }
+
+    int survivor = temp->data; // The last remaining person
+    free(temp); // Free the last remaining node
+    return survivor;
+}
+
+int main() {
+    int n, k;
+    printf("Enter the number of people (n): ");
+    scanf("%d", &n);
+    printf("Enter the step rate (k): ");
+    scanf("%d", &k);
+
+    // Call the Josephus function and print the position of the last person
+    int result = josephus(n, k);
+    printf("The last person remaining is at position: %d\n", result);
+
+    return 0;
+}
