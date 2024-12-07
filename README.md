@@ -53,6 +53,7 @@ This repository is designed to help students, developers, and enthusiasts learn 
 - Selection Sort
 - Insertion Sort
 - Quick Sort
+- Merge sort
 - Heap Sort
 
 ### Searching Algorithms
